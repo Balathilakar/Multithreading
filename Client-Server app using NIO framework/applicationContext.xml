@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:http-conf="http://cxf.apache.org/transports/http/configuration" xmlns:auth="http://cxf.apache.org/configuration/security" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cxf="http://cxf.apache.org/core" default-lazy-init="true" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd    http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd    http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd">
+
+  
+	<!-- <bean id="paymentechAddresses" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:comp/env/props/cargroup/acquirercomm/stratusAddresses"/>
+	</bean> 
+	
+	<bean id="paymentechPorts" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:comp/env/props/cargroup/acquirercomm/stratusPorts"/>
+	</bean> 
+	 -->
+	<!--  Saratoga Protocol Service -->
+	<!--
+	<bean id="StratusProtocolService"
+		class="com.amfam.billing.acquirer.StratusProtocolService" >
+		<constructor-arg index="0" ref="paymentechAddresses" />
+		<constructor-arg index="1" ref="paymentechPorts" />
+	</bean>
+	 -->
+	 <bean id="SaratogaProtocolService"
+		class="com.amfam.billing.acquirer.SaratogaProtocolService" >
+	</bean>
+	 
+</beans>

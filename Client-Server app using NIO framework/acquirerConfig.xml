@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<bean id="propertyPlaceholderConfigurer"   
+	    class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+	    <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+	    <property name="searchSystemEnvironment" value="true" />
+	</bean> 
+	
+	<bean id="isoMessageFactory" class="com.solab.iso8583.MessageFactory">
+		<property name="assignDate" value="true" />
+		<property name="etx" value="-1" />
+		<property name="ignoreLastMissingField" value="true" />
+		<property name="configPath" value="com/amfam/billing/acquirer/j8583-config.xml" />
+	</bean>
+	
+	<bean id="isoBuilder" class="com.amfam.billing.acquirer.SaratogaRequestBuilder">
+		<property name="messageFactory" ref="isoMessageFactory" />
+		<property name="stateCodeMap" ref="stateCodeMap"/>
+		<property name="categoryCode" value="${amfam.cbsconfig.tsys.categoryCode}"/>
+    	<property name="store" value="${amfam.cbsconfig.tsys.store}"/>
+    	<property name="terminalNumber" value="${amfam.cbsconfig.tsys.terminalNumber}"/>
+    	<property name="merchantIDNumber" value="${amfam.cbsconfig.tsys.merchantIDNumber}"/>
+    	<property name="bin" value="${amfam.cbsconfig.tsys.bin}"/>
+    	<property name="cardAcceptorName" value="${amfam.cbsconfig.tsys.cardAcceptorName}"/>
+    	<property name="nationalPOSGeoData" value="${amfam.cbsconfig.tsys.nationalPOSGeoData}"/>
+    	<property name="posInformation" value="${amfam.cbsconfig.tsys.posInformation}"/>
+    	<property name="cpsFieldBitmap" value="${amfam.cbsconfig.tsys.cpsFieldBitmap}"/>
+	</bean>
+	
+	<bean id="stateCodeMap" class="java.util.HashMap">
+    <constructor-arg>
+        <map key-type="java.lang.String" value-type="java.lang.String">
+            <entry key="WI" value="5" />
+            <entry key="OH" value="6" />
+        </map>
+    </constructor-arg>
+    
+	</bean>
+	
+</beans>
