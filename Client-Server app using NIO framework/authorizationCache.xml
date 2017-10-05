@@ -1,0 +1,57 @@
+<ehcache>
+   <!--Default Cache configuration. These will applied to caches programmatically created through
+        the CacheManager.
+
+        The following attributes are required for defaultCache:
+
+        maxInMemory       - Sets the maximum number of objects that will be created in memory
+        eternal           - Sets whether elements are eternal. If eternal,  timeouts are ignored and the element
+                            is never expired.
+        timeToIdleSeconds - Sets the time to idle for an element before it expires.
+                            i.e. The maximum amount of time between accesses before an element expires
+                            Is only used if the element is not eternal.
+                            Optional attribute. A value of 0 means that an Element can idle for infinity
+        timeToLiveSeconds - Sets the time to live for an element before it expires.
+                            i.e. The maximum time between creation time and when an element expires.
+                            Is only used if the element is not eternal.
+        overflowToDisk    - Sets whether elements can overflow to disk when the in-memory cache
+                            has reached the maxInMemory limit.
+
+        -->
+        
+<!-- IMPORTANT NOTE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! : 
+we are using an ancient version of ehcache (i think 1.2)
+the CacheManager does not work as advertized for current versions
+Basically, instance and singleton cachemanagers do not mingle well
+
+1) You must use a singleton wrapper around a new CacheManager.  
+   If you don't and end up using the ehcache singleton directly and there is more than one implementation using ehcache in that loader, 
+   you will read off of ehcache.xml.. which can be anywhere on the classpath.  Cache requests to the manager
+   will return a null and you won't see a problem until you try to put or get to it (NPE)
+2) You must use "new" and not CacheManager.create ... it still gets a ehcache singleton if you don't (not the behavior in 2+ versions)
+3) You must use a configuration file with a name other than ehcache.xml, just to be safe.
+4) This version of ehcache looks for uniqueness on the diskStore even though you 
+   might not even want it flushing to disk.  the diskStore element, with a *loader-unique* name, is required    
+ -->
+
+
+<diskStore path="authorizationCache"/>         
+
+
+ 	<defaultCache
+            maxElementsInMemory="15000"
+            eternal="false"
+            overflowToDisk="false"
+            timeToIdleSeconds="900"
+            timeToLiveSeconds="900"
+            diskPersistent="false"
+            diskExpiryThreadIntervalSeconds="120"/>
+            
+    <cache name="ConfirmationNumberCache"
+        maxElementsInMemory="15000"
+        eternal="false"
+        timeToIdleSeconds="900"
+        timeToLiveSeconds="900"
+        overflowToDisk="false"
+        />
+</ehcache>
